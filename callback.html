@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>callback</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <button type="button" onclick="btnClick()">Click Me</button>
+  <script>
+    function callback() {
+      console.log("Hello World");
+    }
+    function btnClick() {
+      // async
+      setTimeout(function () {
+        callback();
+      }, 2000);
+
+      setInterval(function () {
+        callback();
+      }, 2000);
+      console.log("Button di Click");
+    }
+  </script>
+</body>
+
+</html>
