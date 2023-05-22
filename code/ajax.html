@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AJAX</title>
+  <script>
+    function getProductsUrl(keyword) {
+      // return `https://www.blibli.com/backend/search/products?searchTerm=${keyword}`;
+      return `https://www.blibli.com/backend/search/productssalah?searchTerm=${keyword}`;
+    }
+
+    function getProducts(keyword) {
+      // Code AJAX Here!
+      const ajax = new XMLHttpRequest();
+      const url = getProductsUrl(keyword);
+
+      // menunggu proses ajax selesai, baru tampilkan data
+      // ajax callback
+      ajax.addEventListener("load", function (ev) {
+        // ajax error callback
+        if (ajax.status === 200) {
+          const jsonResponse = JSON.parse(ajax.responseText);
+          clearProducts();
+          displayProducts(jsonResponse);
+        } else {
+          displayProductsError();
+        }
+      });
+
+      ajax.open("GET", url);
+      ajax.send();
+    }
+
+    function displayProductsError() {
+      const error = "Gagal mendapatkan produk";
+      console.log(error);
+      alert(error);
+    }
+
+    function clearProducts() {
+      const productUl = document.getElementById("products");
+      productUl.textContent = "";
+    }
+
+    function displayProducts(data) {
+      data.data.products.forEach((product) => displayProduct(product));
+    }
+
+    function displayProduct(product) {
+      const productLi = document.createElement("li");
+      productLi.textContent = product.name;
+
+      const productUl = document.getElementById("products");
+      productUl.appendChild(productLi);
+    }
+
+    function clearTableProducts() {
+      const productUl = document.getElementById("table-products");
+      productUl.textContent = "";
+    }
+
+    function displayTableProducts(data) {
+      const table = document.createElement("table");
+      table.setAttribute("border", 1);
+
+      let index = 0;
+      data.data.products.forEach((product) => {
+        table.insertRow(index).insertCell(0).innerText = product.name;
+        index++;
+      });
+
+      const tableProduct = document.getElementById("table-products");
+      tableProduct.appendChild(table);
+    }
+
+    function buttonClick() {
+      getProducts(document.getElementById("keyword").value);
+      console.log("Button di Click");
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="keyword" />
+  <button onclick="buttonClick()">Search Products</button>
+  <ul id="products"></ul>
+  <div id="table-products"></div>
+</body>
+
+</html>
