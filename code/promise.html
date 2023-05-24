@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AJAX</title>
+  <script>
+    function getProductsUrl(keyword) {
+      return `https://www.blibli.com/backend/search/products?searchTerm=${keyword}`;
+      // return `https://www.blibli.com/backend/search/salah?searchTerm=${keyword}`;
+    }
+
+    function getProducts(keyword) {
+      // Code Promise Here!
+      const promise = new Promise((resolve, reject) => {
+        // code async here
+        const ajax = new XMLHttpRequest();
+        const url = getProductsUrl(keyword);
+
+        // menunggu proses ajax selesai, baru tampilkan data
+        // ajax callback
+        ajax.addEventListener("load", function (ev) {
+          // ajax error callback
+          if (ajax.status === 200) {
+            const jsonResponse = JSON.parse(ajax.responseText);
+            resolve(jsonResponse);
+          } else {
+            reject(Error("Gagal mengambil data"));
+          }
+        });
+
+        ajax.open("GET", url);
+        ajax.send();
+      });
+      return promise;
+    }
+
+    function clearProducts() {
+      const productUl = document.getElementById("products");
+      productUl.textContent = "";
+    }
+
+    function displayProducts(data) {
+      data.data.products.forEach((product) => displayProduct(product));
+    }
+
+    function displayProduct(product) {
+      const productLi = document.createElement("li");
+      productLi.textContent = product.name;
+
+      const productUl = document.getElementById("products");
+      productUl.appendChild(productLi);
+    }
+
+    function clearTableProducts() {
+      const productUl = document.getElementById("table-products");
+      productUl.textContent = "";
+    }
+
+    function displayTableProducts(data) {
+      const table = document.createElement("table");
+      table.setAttribute("border", 1);
+
+      let index = 0;
+      data.data.products.forEach((product) => {
+        table.insertRow(index).insertCell(0).innerText = product.name;
+        index++;
+      });
+
+      const tableProduct = document.getElementById("table-products");
+      tableProduct.appendChild(table);
+    }
+
+    function buttonClick() {
+      // const promise = getProducts(document.getElementById("keyword1").value);
+      // callback ketika promise berstatus fullfield
+      // promise
+      //   .then((value) => {
+      //     return value.data.products;
+      //   })
+      //   .then((products) => {
+      //     clearProducts();
+      //     products.forEach((product) => {
+      //       displayProduct(product);
+      //     });
+      //   })
+      //   // callback ketika terjadi error
+      //   .catch((error) => {
+      //     console.error(error.message);
+      //   })
+      //   // method ini akan selalu di eksekusi ketika sukses maupun gagal proses promise-sya
+      //   .finally(() => {
+      //     console.log("Hello world");
+      //   });
+
+      // Promise.all
+      const promise1 = getProducts(document.getElementById("keyword1").value);
+      const promise2 = getProducts(document.getElementById("keyword2").value);
+      const promise3 = getProducts(document.getElementById("keyword3").value);
+
+      Promise.all([promise1, promise2, promise3])
+        .then(function (values) {
+          return values.map((value) => {
+            return value?.data?.products;
+          });
+        })
+        .then((arrayProducts) => {
+          clearProducts();
+          arrayProducts.forEach((products) => {
+            products.forEach((product) => {
+              displayProduct(product);
+            });
+          });
+        })
+        .catch((error) => {
+          console.error(error.message);
+        })
+        .finally(() => {
+          console.log("selesai memproses semua promise");
+        });
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="keyword1" />
+  <input type="text" id="keyword2" />
+  <input type="text" id="keyword3" />
+  <button onclick="buttonClick()">Search Products</button>
+  <ul id="products"></ul>
+  <div id="table-products"></div>
+</body>
+
+</html>
