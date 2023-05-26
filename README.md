@@ -53,3 +53,8 @@ fetch(url, config)
     // do something here
   });
 ```
+
+### Async Await
+
+adalah fitur baru di JS yang digunakan untuk mempermudah pembuatan Promise, dengan menggunakan `async await`, kita bisa membuat kode Asynchronous tapi dengan gaya Synchronous.
+`async` digunakan untuk menandakan bahwa function tersebut adalah Asynchronous, dan mengembalikan promise, `await` digunakan untuk mendapatkan value hasil dari proses function yang mengembalikan promise, `await` hanya bisa digunakan dalam `async` function.
