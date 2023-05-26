@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>AJAX</title>
+  <script>
+    // membuat web worker
+    const worker = new Worker("./web-worker.js");
+
+    worker.addEventListener("message", function (ev) {
+      console.log(`menerima data dari web worker : ${ev.data}`);
+    });
+
+    function buttonClick() {
+      console.log("Start Log");
+
+      // mengirimkan data ke web worker
+      worker.postMessage(2000);
+      console.log("Finish Log");
+    }
+    function clickLogging() {
+      console.log("OK");
+    }
+  </script>
+</head>
+
+<body>
+  <button onclick="buttonClick()">Search Products</button>
+  <button onclick="clickLogging()" type="button">click to logging</button>
+</body>
+
+</html>
