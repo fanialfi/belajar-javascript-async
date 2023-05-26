@@ -13,7 +13,7 @@ program tidak akan terjebak dalam mode tunggu (blocking) saat menunggu tugas sel
 
 merupakan mekanisme yang digunakan untuk memanggil kembali kode program yang ada di dalam proses Asynchronous, biasa dibuat dalam bentuk function, dan function tersebut akan di eksekusi saat proses Asynchronous selesai.
 
-### Ajax
+### ~~Ajax~~
 
 singkatan dari _Asynchronous javascript and XML_, dapat digunakan untuk mengambil data dari server setelah halaman web tampil, dapat mengirim data ke server secara Asynchronous di background.
 
@@ -37,3 +37,19 @@ ketika promise bernilai rejected, promise memiliki method yang bernama `catch` y
 
 kadang-kadang kita berhadapan dengan beberapa proses async sekaligus, menggunakan promise satu persatu sangatlah susah / ribet.
 `Promise.all` bisa digunakan untuk menggabungkan beberapa promise menjadi promise baru yang berisi data array dari hasil promise-nya.
+
+### Fetch API
+
+adalah api baru yang digunakan untuk melakukan proses ajax, tidak seperti ajax yang menggunakan Callback, kalau Fetch API secara default menggunakan promise.
+
+menggunakan Fetch API
+
+```javascript
+fetch(url, config)
+  .then(function () {
+    // do something here
+  })
+  .then(function () {
+    // do something here
+  });
+```
